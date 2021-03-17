@@ -7,15 +7,15 @@ library("tidyverse")
 
 
 # Define functions --------------------------------------------------------
-#source(file = "R/99_project_functions.R")
+
 
 
 # Load data ---------------------------------------------------------------
-my_data_clean <- read_tsv(file = "data/02_my_data_clean.tsv.gz")
+gravier_data <- read_tsv(file = "data/02_gravier_data.tsv.gz")
 
 
 # Wrangle data ------------------------------------------------------------
-gravier_data <- my_data_clean %>%
+gravier_data <- gravier_data %>%
   mutate(outcome = case_when(value == "good" ~ 0,
                              value == "poor" ~ 1)) %>% 
   select(-value)
@@ -38,10 +38,10 @@ gravier_data_long_nested <- gravier_data_long_nested %>%
   sample_n(size = 100)
 
 # Data ready for PCA-analysis
-my_data_clean_aug <- gravier_data %>%
+gravier_data_aug <- gravier_data %>%
   select(outcome, pull(gravier_data_long_nested, gene))
 
 
 # Write data --------------------------------------------------------------
-write_tsv(x = my_data_clean_aug,
-          path = "data/03_my_data_clean_aug.tsv.gz")
+write_tsv(x = gravier_data_aug,
+          path = "data/03_gravier_data_aug.tsv.gz")

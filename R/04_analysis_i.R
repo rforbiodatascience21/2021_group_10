@@ -8,20 +8,20 @@ library("broom")
 
 
 # Define functions --------------------------------------------------------
-#source(file = "R/99_project_functions.R")
+
 
 
 # Load data ---------------------------------------------------------------
-my_data_clean_aug <- read_tsv(file = "data/03_my_data_clean_aug.tsv.gz")
+gravier_data_aug <- read_tsv(file = "data/03_gravier_data_aug.tsv.gz")
 
 
 # Wrangle data ------------------------------------------------------------
-#my_data_clean_aug %>% ...
 
 
-# Model data
+
+# Model data --------------------------------------------------------------
 # Making the PCA analysis
-pca_fit <- my_data_clean_aug %>% 
+pca_fit <- gravier_data_aug %>% 
   select(where(is.numeric)) %>%
   prcomp(scale = TRUE)
 
@@ -30,7 +30,7 @@ pca_fit <- my_data_clean_aug %>%
 
 # PCA coordinates plot
 pca_pl1 <- pca_fit %>%
-  augment(my_data_clean_aug) %>% 
+  augment(gravier_data_aug) %>% 
   ggplot(aes(x = .fittedPC1,
              y = .fittedPC2,
              color = factor(outcome))) + 
@@ -54,7 +54,9 @@ pca_pl2 <- pca_fit %>%
               values_from = "value") %>%
   ggplot(aes(x = PC1,
              y = PC2)) +
-  geom_segment(xend = 0, yend = 0, arrow = arrow_style) +
+  geom_segment(xend = 0,
+               yend = 0,
+               arrow = arrow_style) +
   geom_text(aes(label = column),
             hjust = 1,
             nudge_x = -0.01,
